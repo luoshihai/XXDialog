@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnDismissListener;
+import android.support.annotation.StyleRes;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,13 +14,13 @@ import android.view.Window;
 import android.view.WindowManager;
 
 
-public abstract class DialogUtil {
+public abstract class XXDialog {
     private Dialog mDialog;
     private Window mDialogWindow;
     private DialogViewHolder dilaogVh;
     private View mRootView;
 
-    public DialogUtil(Context context, int layoutId) {
+    public XXDialog(Context context, int layoutId) {
         dilaogVh = DialogViewHolder.get(context, layoutId);
         mRootView = dilaogVh.getConvertView();
         mDialog = new Dialog(context, R.style.dialog);
@@ -31,7 +32,7 @@ public abstract class DialogUtil {
     /**B
      * 把弹出框view holder传出去
      */
-    public abstract void convert(DialogViewHolder viewHolder);
+    public abstract void convert(DialogViewHolder holder);
 
     public static AlertDialog.Builder creatNormalDialogBuilder(Context context, String title, String message) {
         return new AlertDialog.Builder(context)
@@ -42,7 +43,7 @@ public abstract class DialogUtil {
     /**
      * 显示dialog
      */
-    public DialogUtil showDialog() {
+    public XXDialog showDialog() {
         if (mDialog != null && !mDialog.isShowing()) {
             mDialog.show();
         }
@@ -50,14 +51,15 @@ public abstract class DialogUtil {
     }
 
     /**
-     * 弹出时背景亮度 值为0.0~1.0
-     * 1.0表示全黑  0.0表示全白
+     *
+     * @param light 弹出时背景亮度 值为0.0~1.0    1.0表示全黑  0.0表示全白
+     * @return
      */
-    public DialogUtil backgroundLight(float light) {
+    public XXDialog backgroundLight(double light) {
         if (light < 0.0 || light > 1.0)
             return this;
         WindowManager.LayoutParams lp = mDialogWindow.getAttributes();
-        lp.dimAmount = light;
+        lp.dimAmount = (float) light;
         mDialogWindow.setAttributes(lp);
         return this;
     }
@@ -65,7 +67,7 @@ public abstract class DialogUtil {
     /**
      * 从底部一直弹到中间
      */
-    public DialogUtil fromBottomToMiddle() {
+    public XXDialog fromBottomToMiddle() {
         mDialogWindow.setWindowAnimations(R.style.window_bottom_in_bottom_out);
         return this;
     }
@@ -73,7 +75,7 @@ public abstract class DialogUtil {
     /**
      * 从底部弹出
      */
-    public DialogUtil fromBottom() {
+    public XXDialog fromBottom() {
         fromBottomToMiddle();
         mDialogWindow.setGravity(Gravity.CENTER | Gravity.BOTTOM);
         return this;
@@ -82,34 +84,58 @@ public abstract class DialogUtil {
     /**
      * 从左边一直弹到中间退出也是到左边
      */
-    public DialogUtil fromLeftToMiddle() {
+    public XXDialog fromLeftToMiddle() {
         mDialogWindow.setWindowAnimations(R.style.window_left_in_left_out);
         mDialogWindow.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         return this;
     }
 
     /**
-     * 从右边一直弹到中间退出也是到右边
+     *  从右边一直弹到中间退出也是到右边
+     * @return
      */
-    public DialogUtil fromRightToMiddle() {
-        mDialogWindow.setWindowAnimations(R.style.window_left_in_right_out);
+    public XXDialog fromRightToMiddle() {
+        mDialogWindow.setWindowAnimations(R.style.window_right_in_right_out);
         mDialogWindow.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         return this;
     }
 
     /**
-     * 显示一个Dialog可以传递一个style
+     * 从顶部弹出 从顶部弹出  保持在顶部
+     * @return
      */
-    public DialogUtil showDialog(int style) {
+    public XXDialog fromTop() {
+        fromTopToMiddle();
+        mDialogWindow.setGravity(Gravity.CENTER | Gravity.TOP);
+        return this;
+    }
+
+    /**
+     * 从顶部谈到中间  从顶部弹出  保持在中间
+     * @return
+     */
+    public XXDialog fromTopToMiddle() {
+        mDialogWindow.setWindowAnimations(R.style.window_top_in_top_out);
+        mDialogWindow.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        return this;
+    }
+    /**
+     *
+     * @param style 显示一个Dialog自定义一个弹出方式  具体怎么写 可以模仿上面的
+     * @return
+     */
+    public XXDialog showDialog(@StyleRes int style) {
         mDialogWindow.setWindowAnimations(style);
         mDialog.show();
         return this;
     }
 
     /**
-     * 显示一个Dialog可以传递一个是否显示动画
+     *
+     * @param isAnimation 如果为true 就显示默认的一个缩放动画
+     * @return
      */
-    public DialogUtil showDialog(boolean isAnimation) {
+    public XXDialog showDialog(boolean isAnimation) {
         mDialogWindow.setWindowAnimations(R.style.dialog_scale_animstyle);
         mDialog.show();
         return this;
@@ -118,7 +144,7 @@ public abstract class DialogUtil {
     /**
      * 全屏显示
      */
-    public DialogUtil fullScreen() {
+    public XXDialog fullScreen() {
         WindowManager.LayoutParams wl = mDialogWindow.getAttributes();
         wl.height = ViewGroup.LayoutParams.MATCH_PARENT;
         wl.width = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -127,14 +153,14 @@ public abstract class DialogUtil {
     }
 
 
-    public DialogUtil setOnKeyListener(DialogInterface.OnKeyListener onKeyListener){
+    public XXDialog setOnKeyListener(DialogInterface.OnKeyListener onKeyListener){
         mDialog.setOnKeyListener(onKeyListener);
         return this;
     }
     /**
      * 全屏宽度
      */
-    public DialogUtil fullWidth() {
+    public XXDialog fullWidth() {
         WindowManager.LayoutParams wl = mDialogWindow.getAttributes();
         wl.width = ViewGroup.LayoutParams.MATCH_PARENT;
         mDialog.onWindowAttributesChanged(wl);
@@ -144,7 +170,7 @@ public abstract class DialogUtil {
     /**
      * 全屏高度
      */
-    public DialogUtil fullHeight() {
+    public XXDialog fullHeight() {
         WindowManager.LayoutParams wl = mDialogWindow.getAttributes();
         wl.height = ViewGroup.LayoutParams.MATCH_PARENT;
         mDialog.onWindowAttributesChanged(wl);
@@ -152,9 +178,12 @@ public abstract class DialogUtil {
     }
 
     /**
-     * 自己设置高度和宽度
+     *
+     * @param width  自定义的宽度
+     * @param height  自定义的高度
+     * @return
      */
-    public DialogUtil setWidthAndHeight(int width, int height) {
+    public XXDialog setWidthAndHeight(int width, int height) {
         WindowManager.LayoutParams wl = mDialogWindow.getAttributes();
         wl.width = width;
         wl.height = height;
@@ -180,7 +209,7 @@ public abstract class DialogUtil {
     /**
      * 设置监听
      */
-    public DialogUtil setDialogDismissListener(OnDismissListener listener) {
+    public XXDialog setDialogDismissListener(OnDismissListener listener) {
         mDialog.setOnDismissListener(listener);
         return this;
     }
@@ -188,7 +217,7 @@ public abstract class DialogUtil {
     /**
      * 设置监听
      */
-    public DialogUtil setOnCancelListener(OnCancelListener listener) {
+    public XXDialog setOnCancelListener(OnCancelListener listener) {
         mDialog.setOnCancelListener(listener);
         return this;
     }
@@ -196,7 +225,7 @@ public abstract class DialogUtil {
     /**
      * 设置是否能取消
      */
-    public DialogUtil setCancelAble(boolean cancel) {
+    public XXDialog setCancelAble(boolean cancel) {
         mDialog.setCancelable(cancel);
         return this;
     }
@@ -206,7 +235,7 @@ public abstract class DialogUtil {
     /**
      * 设置触摸其他地方是否能取消
      */
-    public DialogUtil setCanceledOnTouchOutside(boolean cancel) {
+    public XXDialog setCanceledOnTouchOutside(boolean cancel) {
         mDialog.setCanceledOnTouchOutside(cancel);
         return this;
     }

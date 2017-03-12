@@ -59,4 +59,8 @@
         <item name="android:windowExitAnimation">@anim/scale_dialog_out_anim</item>
     </style>
 
+    <style name="window_top_in_top_out">
+        <item name="android:windowEnterAnimation">@anim/dialog_in_top</item>
+        <item name="android:windowExitAnimation">@anim/dialog_out_top</item>
+    </style>
 </resources>
