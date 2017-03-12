@@ -195,6 +195,7 @@ public abstract class XXDialog {
      * cancel dialog
      */
     public void cancelDialog() {
+        if (mDialog != null && mDialog.isShowing())
         dismiss();
     }
 
@@ -202,7 +203,7 @@ public abstract class XXDialog {
      * cancel dialog
      */
     public void dismiss() {
-        if (mDialog != null) {
+        if (mDialog != null && mDialog.isShowing()) {
             mDialog.dismiss();
         }
     }
