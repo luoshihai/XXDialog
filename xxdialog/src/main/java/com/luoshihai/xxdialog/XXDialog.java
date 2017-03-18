@@ -1,5 +1,6 @@
 package com.luoshihai.xxdialog;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -67,6 +68,7 @@ public abstract class XXDialog {
     /**
      * 从底部一直弹到中间
      */
+    @SuppressLint("NewApi")
     public XXDialog fromBottomToMiddle() {
         mDialogWindow.setWindowAnimations(R.style.window_bottom_in_bottom_out);
         return this;
@@ -87,6 +89,7 @@ public abstract class XXDialog {
     public XXDialog fromLeftToMiddle() {
         mDialogWindow.setWindowAnimations(R.style.window_left_in_left_out);
         mDialogWindow.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        mDialogWindow.setGravity(Gravity.CENTER | Gravity.LEFT);
         return this;
     }
 
@@ -97,6 +100,8 @@ public abstract class XXDialog {
     public XXDialog fromRightToMiddle() {
         mDialogWindow.setWindowAnimations(R.style.window_right_in_right_out);
         mDialogWindow.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        mDialogWindow.setGravity(Gravity.RIGHT);
+//
         return this;
     }
 

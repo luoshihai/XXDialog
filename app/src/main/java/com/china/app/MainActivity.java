@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
             }
-        }.fromBottom().backgroundLight(0.2).fullWidth().showDialog();
+        }.fromRightToMiddle().fullHeight().showDialog().setCanceledOnTouchOutside(true);
 
     }
 }
