@@ -11,11 +11,11 @@
         }
     }
 ```
-2.在自己Modul的build.gradle中添加```java compile 'com.github.lshGitHubName:XXDialog:v1.0.2'```
+2.在自己Modul的build.gradle中添加```compile 'com.github.luoshihai:XXDialog:v1.0.2'```
 如下:
 ```java
 dependencies {
-	        compile 'com.github.lshGitHubName:XXDialog:v1.0.2'
+	        compile 'com.github.luoshihai:XXDialog:v1.0.2'
 	}
 ```
 ## 开始使用
